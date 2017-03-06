@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
+ * 提供对DCMP检索素材封装并生成Excel文件,提供客户端下载功能
  */
 @SpringBootApplication
 @RestController
