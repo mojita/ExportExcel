@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp实现跨域问题</title>
+    <script src="jquery-1.9.1.js"></script>
+</head>
+<body>
+
+
+
+    <input type="button" value="传递数据" id="btn"/>
+
+    <script type="text/javascript">
+
+        //模拟数据
+        var data= JSON.stringify([
+            {
+                fileId: "1",
+                title: "中国",
+                secretLevel: "公开",
+                filestate: "在线",
+                pageNum: "1",
+                fileNo: "1",
+                videoLength: "100",
+                shootingDate: "2016-10-10",
+                shootingAddress: "北京",
+                shootingUnit: "中央电视台",
+                photographer: "黎明"
+            },
+            {
+                fileId:"2",
+                title:"美国",
+                secretLevel:"保密",
+                filestate:"离线",
+                pageNum:"2",
+                fileNo:"2",
+                videoLength:"200",
+                shootingDate:"2017-01-01",
+                shootingAddress:"旧金山",
+                shootingUnit:"纽约时报",
+                photographer:"詹姆斯邦德"
+            },
+            {
+                fileId:"3",
+                title:"日本",
+                secretLevel:"公开",
+                filestate:"在线",
+                pageNum:"3",
+                fileNo:"3",
+                videoLength:"300",
+                shootingDate:"2015-10-10",
+                shootingAddress:"大阪",
+                shootingUnit:"NHK",
+                photographer:"山本五十六"
+            }
+        ]);
+
+        //注册事件
+        $("#btn").click(function () {
+            alert(data);
+            $.ajax({
+                url: 'http://localhost:8080/getAjaxValue',
+                type: 'post',
+                dataType:'jsonp',
+                jsonp: "callback",
+                data:data,
+                success:function(data){
+                    alert("成功");
+                },
+                error:function(data){
+                    alert("失败");
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

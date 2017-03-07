@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试ajax和spring-boot之间的数据交换</title>
+    <script src="../static/js/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+
+    <a id="test1" href="">向服务器上传数据</a>
+
+    <!--现在模拟ajax和springboot进行数据交换-->
+    <script type="text/javascript">
+
+        var data=[
+            {
+                fileId:"1",
+                title:"中国",
+                secretLevel:"公开",
+                filestate:"在线",
+                pageNum:"1",
+                fileNo:"1",
+                videoLength:"100",
+                shootingDate:"2016-10-10",
+                shootingAddress:"北京",
+                shootingUnit:"中央电视台",
+                photographer:"黎明"
+            },
+            {
+                fileId:"2",
+                title:"美国",
+                secretLevel:"保密",
+                filestate:"离线",
+                pageNum:"2",
+                fileNo:"2",
+                videoLength:"200",
+                shootingDate:"2017-01-01",
+                shootingAddress:"旧金山",
+                shootingUnit:"纽约时报",
+                photographer:"詹姆斯邦德"
+            },
+            {
+                fileId:"3",
+                title:"日本",
+                secretLevel:"公开",
+                filestate:"在线",
+                pageNum:"3",
+                fileNo:"3",
+                videoLength:"300",
+                shootingDate:"2015-10-10",
+                shootingAddress:"大阪",
+                shootingUnit:"NHK",
+                photographer:"山本五十六"
+            }
+        ];
+        $("#test1").onclick(function (data) {
+            $.ajax({
+                url:'http://localhost:8080/getAjaxValue',
+                type:'post',
+                data:"{username:'username'}",
+                async : false, //默认为true 异步
+                error:function(){
+                    alert('error');
+                },
+                success:function(data){
+//                    var jsonObj=eval("("+data+")");
+//                    $.each(jsonObj, function (i, item) {
+//                        //$("#taskClass").append("<option value='"+item.+"."+item.fieldName+"'>"+item.statuDesc+"</option>");
+//                        alert(item.value + ","  + item.desc);
+//                    });
+//                    $("#"+divs).html(data);
+                }
+            });
+        })
+    </script>
+</body>
+</html>
