@@ -1,4 +1,4 @@
-package com.sobey.export;
+package com.sobey.service;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSON;
-import com.sobey.generateExcel.MetaData;
+import com.sobey.model.MetaData;
 
 /**
  * 提供对DCMP检索素材封装并生成Excel文件,提供客户端下载功能
@@ -25,7 +25,11 @@ public class ExportExcelApplication {
 
 	private Logger logger = Logger.getLogger(ExportExcelApplication.class);
 
-	public static List<List<MetaData>> metaDatas = new ArrayList<>();
+	public static List<List<MetaData>> metaDatas = new ArrayList<>();		//存放前台需要生成Excel的元数据
+
+	//下面这两个参数是用来计算请求数量是否满足条件,当满足条件时才开始生成Excel文档并且提供下载
+	public static int requestCount;		//这里记录请求的次数
+	public static int metaDataCount;	//数据发送的总条数
 
 	@RequestMapping(value = "/")
 	public String index(@RequestParam(value = "data",defaultValue = "hello")String data){
@@ -34,7 +38,7 @@ public class ExportExcelApplication {
 
 
 	/**
-	 * 获得解析的数据信息
+	 * 获得从前台传输的数据并且进行数据的封装
 	 * @param request
      * @return
      */
@@ -46,10 +50,16 @@ public class ExportExcelApplication {
 		String reslut = "{reslut:'true'}";
 		String dataList = request.getParameter("datalist");
 		String callBack = request.getParameter("callback");
+		String count = request.getParameter("metaDataCount");
+		if(!StringUtils.isEmpty(metaDataCount))
+			metaDataCount = Integer.parseInt(count);
+		System.out.println(count);
+
 
 		if(dataList!=null) {
 			List<MetaData> metaDatasTemp = JSON.parseArray(dataList, MetaData.class);
 			if(logger.isInfoEnabled()) logger.info("获取ExcelMetaData数据条数:"+metaDatasTemp.size());
+			requestCount++;
 		}else {
 			if(logger.isWarnEnabled()) logger.warn("前台构造的Excel数据为null,没有货取到MeataData数据");
 		}
@@ -60,6 +70,12 @@ public class ExportExcelApplication {
 		return reslut;
 	}
 
+
+	/**
+	 * 该方法主要是提供下载功能
+	 * @param res
+	 * @throws IOException
+     */
 	@RequestMapping(value="/testDownload",method= RequestMethod.GET)
 	public void testDownload(HttpServletResponse res) throws IOException {
 		String fileName="test.xls";

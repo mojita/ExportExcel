@@ -18,8 +18,17 @@ public class JSONTest {
         for (Person p:json1){
             System.out.println(p.getName());
         }
-
-
     }
+
+
+    //判断是否可以执行创建Excel并且提供下载功能测试
+    @Test
+    public void testRequestGetValue(){
+        //这里重新思考了通过前端传回递减的数据条数然后判断是否可以执行创建文件操作和
+//        if(){
+//
+//        }
+    }
+
 
 }

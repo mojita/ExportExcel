@@ -1,13 +1,15 @@
-package com.sobey.generateExcel;
+package com.sobey.model;
 
 /**
  * Created by lijunhong on 17/3/6.
+ *
+ * 根据北京航天档案馆的Excel要求的元数据封装
  */
 public class MetaData {
 
-    private String fileId;              //文件序号
+    private String fileId;              //文件编号  文件序号就在生成文件的时候直接动态的指定
     private String title;               //题目
-    private String secretLevel;          //保密等级
+    private String secretLevel;         //保密等级
     private String fileState;           //文件状态
     private String pageNum;             //页数
     private String fileNo;              //档号

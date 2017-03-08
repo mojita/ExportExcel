@@ -56,6 +56,12 @@
 		<!--</dependency>-->
 
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.16-beta2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.9.10</version>
