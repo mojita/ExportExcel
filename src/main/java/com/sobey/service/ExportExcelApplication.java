@@ -21,6 +21,7 @@ import com.sobey.util.ExcelFileUtils;
  */
 @SpringBootApplication
 @RestController
+@CrossOrigin
 public class ExportExcelApplication {
 
 
@@ -47,6 +48,7 @@ public class ExportExcelApplication {
      */
 	@RequestMapping(value = "/getAjaxValue")
 	@ResponseBody
+	@CrossOrigin
 	public String getAjaxValue(HttpServletRequest request,HttpServletResponse response) throws InterruptedException {
 
 
@@ -55,8 +57,8 @@ public class ExportExcelApplication {
 		String dataList = request.getParameter("datalist");
 		String callBack = request.getParameter("callback");
 		model = request.getParameter("excelModelModelValue");
-//		metaDataCount = Integer.parseInt(request.getParameter("metaDataCount"));
 
+		System.out.println("model"+model);
 
 		if(dataList!=null) {
 			List<MetaData> metaDatasTemp = JSON.parseArray(dataList, MetaData.class);
@@ -89,6 +91,7 @@ public class ExportExcelApplication {
 		if(StringUtils.isEmpty(model)) {
 			if(logger.isErrorEnabled()) logger.error("用户没有选择Excel的生成模板,不能生成模板并且提供下载");
 		}
+		System.out.println("downloadModel"+model);
 		String fileName = ExcelFileUtils.createExcelByModel(model, metaDatas,meataDataLength);
 		System.out.println("11111"+fileName);
 		if(StringUtils.isEmpty(fileName)){

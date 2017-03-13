@@ -1,7 +1,6 @@
 package com.sobey.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.testng.annotations.Test;
 

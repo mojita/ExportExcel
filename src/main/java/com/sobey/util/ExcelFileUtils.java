@@ -90,16 +90,20 @@ public class ExcelFileUtils {
      */
     public static String getFileName(String model){
         Date date = new Date();
-
         Long time = date.getTime();
+        System.out.println(time);
+        System.out.println("0getFileName"+model);
         if(!StringUtils.isEmpty(model) && RECORD_BORROW_REGISTRY_MODEL.equals(model)) {
             fileName = time + "registry.xls";
+            System.out.println("1"+fileName);
         }
         if(!StringUtils.isEmpty(model) && THEME_PREVIEWEXCEL_MODEL.equals(model)){
             fileName = time + "theme.xls";
+            System.out.println("2"+fileName);
         }
         if(!StringUtils.isEmpty(model) && AUDIO_AND_VIDEO_HANDOVER_MODEL.equals(model)){
             fileName = time + "handOver.xls";
+            System.out.println("3"+fileName);
         }
         System.out.println("into getFileName:"+fileName);
         return fileName;
