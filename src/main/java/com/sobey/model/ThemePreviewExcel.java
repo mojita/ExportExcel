@@ -6,8 +6,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
+
+import com.sobey.util.ExcelFileUtils;
+import com.sobey.util.ExcelViewJudge;
 
 /**
  * Created by lijunhong on 17/3/8.
@@ -45,7 +49,11 @@ public class ThemePreviewExcel {
     public ThemePreviewExcel(String fileName,String path){
         this.path = path;
         this.fileName = fileName;
-        this.filePath = path + fileName;
+        if(ExcelFileUtils.isWindosSystem){
+            this.filePath = path + "/" +fileName;
+        }else {
+            this.filePath = path + fileName;
+        }
         workbook = new HSSFWorkbook();
         sheet = workbook.createSheet(EXCEL_FILE_SHEET_NAME);
     }
@@ -57,7 +65,7 @@ public class ThemePreviewExcel {
     public void createExcelTableHeader(){
 
         sheet.setColumnWidth(0,20*256);             //设置档号的宽度
-        sheet.setColumnWidth(1,28*256);              //设置题名
+        sheet.setColumnWidth(1,60*256);              //设置题名
         sheet.setColumnWidth(2,18*256);              //设置密级的款的
         sheet.setColumnWidth(3,18*256);              //设置片长
         sheet.setColumnWidth(4,20*256);              //设置拍摄时间
@@ -135,12 +143,16 @@ public class ThemePreviewExcel {
 
                 //设置密级
                 cell = row.createCell(2);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():"");
+                cell.setCellValue(ExcelViewJudge.getPrivilegeTemplateCodeString(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():""));
                 cell.setCellStyle(getHssfCellStyle());
 
                 //设置片长
                 cell = row.createCell(3);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getVideoLength())?metaData.getVideoLength():"");
+                if(!StringUtils.isEmpty(metaData.getVideoLength())){
+                    Long l100 = Long.parseLong(metaData.getVideoLength());
+                    String timeStr = ExcelViewJudge.getTimeLength(l100);
+                    cell.setCellValue(timeStr);
+                }
                 cell.setCellStyle(getHssfCellStyle());
 
                 //设置拍摄时间
@@ -175,6 +187,7 @@ public class ThemePreviewExcel {
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderRight(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
+        style.setAlignment(CellStyle.ALIGN_CENTER);
         return style;
     }
 

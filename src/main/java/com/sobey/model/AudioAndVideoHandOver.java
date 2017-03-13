@@ -10,6 +10,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
 
+import com.sobey.util.ExcelFileUtils;
+import com.sobey.util.ExcelViewJudge;
+
 /**
  * Created by lijunhong on 17/3/8.
  * 声像移交目录model为:2
@@ -56,7 +59,11 @@ public class AudioAndVideoHandOver {
     public AudioAndVideoHandOver(String fileName,String path){
         this.path = path;
         this.fileName = fileName;
-        this.filePath = path + fileName;
+        if(ExcelFileUtils.isWindosSystem){
+            this.filePath = path + "/" + fileName;
+        }else {
+            this.filePath = path + fileName;
+        }
         workbook = new HSSFWorkbook();
         sheet = workbook.createSheet(EXCEL_FILE_SHEET_NAME);
     }
@@ -65,10 +72,10 @@ public class AudioAndVideoHandOver {
     /**
      * 本方法主要是根据提供的数据构造胡一张Excel表
      */
-    public void createExcelTableHeader(){
+    public void createExcelTableHeader(int count){
 
         sheet.setColumnWidth(0,10*256);              //设置序号
-        sheet.setColumnWidth(1,28*256);              //设置题名
+        sheet.setColumnWidth(1,60*256);              //设置题名
         sheet.setColumnWidth(2,20*256);              //设置摄录时间
         sheet.setColumnWidth(3,15*256);              //设置密级
         sheet.setColumnWidth(4,15*256);              //设置片长
@@ -112,7 +119,7 @@ public class AudioAndVideoHandOver {
 
         cell = row.createCell(7);
         //TODO 这里的条数暂时不知道是什么字段数据,不知道是不是总条数的意思?
-        cell.setCellValue("100");
+        cell.setCellValue(count);
         style = workbook.createCellStyle();
         style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
         cell.setCellStyle(style);
@@ -190,12 +197,16 @@ public class AudioAndVideoHandOver {
 
                 //设置密级
                 cell = row.createCell(3);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():"");
+                cell.setCellValue(ExcelViewJudge.getPrivilegeTemplateCodeString(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():""));
                 cell.setCellStyle(getHssfCellStyle());
 
                 //设置片长
                 cell = row.createCell(4);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getVideoLength())?metaData.getVideoLength():"");
+                if(!StringUtils.isEmpty(metaData.getVideoLength())){
+                    Long l100 = Long.parseLong(metaData.getVideoLength());
+                    String timeStr = ExcelViewJudge.getTimeLength(l100);
+                    cell.setCellValue(timeStr);
+                }
                 cell.setCellStyle(getHssfCellStyle());
 
                 //设置摄录地点

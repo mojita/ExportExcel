@@ -10,6 +10,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
 
+import com.sobey.util.ExcelFileUtils;
+import com.sobey.util.ExcelViewJudge;
+
 /**
  * Created by lijunhong on 17/3/8.
  *
@@ -49,7 +52,12 @@ public class RecordBorrowRegistry {
     public RecordBorrowRegistry(String fileName,String path){
         this.path = path;
         this.fileName = fileName;
-        this.filePath = path + fileName;
+        logger.debug("filename"+fileName);
+        if(ExcelFileUtils.isWindosSystem){
+            this.filePath = path + "/" + fileName;
+        }else {
+            this.filePath = path + fileName;
+        }
         workbook = new HSSFWorkbook();
         sheet = workbook.createSheet(EXCEL_FILE_SHEET_NAME);
     }
@@ -62,8 +70,8 @@ public class RecordBorrowRegistry {
 
         sheet.setColumnWidth(0,20*256);              //设置序号
         sheet.setColumnWidth(1,28*256);              //设置档号
-        sheet.setColumnWidth(2,28*256);              //设置文件编号
-        sheet.setColumnWidth(3,28*256);              //设置题目
+        sheet.setColumnWidth(2,35*256);              //设置文件编号
+        sheet.setColumnWidth(3,60*256);              //设置题目
         sheet.setColumnWidth(4,15*256);              //设置密级
         sheet.setColumnWidth(5,15*256);              //设置页数
         sheet.setColumnWidth(6,15*256);              //设置文件状态
@@ -160,7 +168,7 @@ public class RecordBorrowRegistry {
 
                 //设置密级
                 cell = row.createCell(4);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():"");
+                cell.setCellValue(ExcelViewJudge.getPrivilegeTemplateCodeString(!StringUtils.isEmpty(metaData.getSecretLevel())?metaData.getSecretLevel():""));
                 cell.setCellStyle(getHssfCellStyle());
 
                 //设置页数
@@ -170,7 +178,7 @@ public class RecordBorrowRegistry {
 
                 //设置文件状态
                 cell = row.createCell(6);
-                cell.setCellValue(!StringUtils.isEmpty(metaData.getFileState())?metaData.getFileState():"");
+                cell.setCellValue(ExcelViewJudge.getStorageState(!StringUtils.isEmpty(metaData.getFileState())?metaData.getFileState():""));
                 cell.setCellStyle(getHssfCellStyle());
                 index++;
             }

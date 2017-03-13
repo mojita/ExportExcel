@@ -1,5 +1,6 @@
 package com.sobey.test;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import com.sobey.model.AudioAndVideoHandOver;
 import com.sobey.model.MetaData;
 import com.sobey.model.RecordBorrowRegistry;
 import com.sobey.model.ThemePreviewExcel;
+import com.sobey.util.ExcelFileUtils;
+import com.sobey.util.ExcelViewJudge;
 
 /**
  * Created by lijunhong on 17/3/8.
@@ -71,14 +74,28 @@ public class ExcelTest {
     @Test
     public void testAudioAnd(){
         AudioAndVideoHandOver audioAndVideoHandOver = new AudioAndVideoHandOver(fileName,filePath);
-        audioAndVideoHandOver.createExcelTableHeader();
-        int index = audioAndVideoHandOver.createExcelTableBody(initMetaData());
-        System.out.println(index);
-        audioAndVideoHandOver.createExcelFooter(index);
+//        audioAndVideoHandOver.createExcelTableHeader();
+//        int index = audioAndVideoHandOver.createExcelTableBody(initMetaData());
+//        System.out.println(index);
+//        audioAndVideoHandOver.createExcelFooter(index);
     }
 
 
+    @Test
+    public void getFilePath(){
+        System.out.println(ExcelFileUtils.getFilePath());
+    }
 
+
+    @Test
+    public void getTime(){
+        String time = ExcelViewJudge.l100ns2TC(12000000000L);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String string = simpleDateFormat.format(12000000000L);
+        System.out.println(string);
+
+        System.out.println(time);
+    }
 
 
 }
